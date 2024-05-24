@@ -51,7 +51,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   m_InteractionLayers:
-    m_Bits: 1
+    m_Bits: 2
   m_DistanceCalculationMode: 1
   m_SelectMode: 1
   m_FocusMode: 1
@@ -195,7 +195,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 15.6, y: 13.34, z: -0.26}
-  m_LocalScale: {x: 1.6156906, y: 0.44232512, z: 1.244998}
+  m_LocalScale: {x: 1.6383089, y: 0.44851732, z: 1.2624269}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8529529870658201960}
