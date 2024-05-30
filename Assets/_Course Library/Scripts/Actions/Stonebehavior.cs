@@ -12,7 +12,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class DeactivateGrab : MonoBehaviour
 {
     private XRGrabInteractable grabComp;  // Component: Script XRGrabInteractable
-    private XRSocketInteractor socketcomp; // Component: Script XRSocketInteractor
+    //private XRSocketInteractor socketcomp; // Component: Script XRSocketInteractor
     private TeleportationAnchor teleportComp; // Component: Teleportation Area
 
     private Rigidbody rb;
@@ -37,10 +37,13 @@ public class DeactivateGrab : MonoBehaviour
     void Start()
     {
         grabComp = GetComponent<XRGrabInteractable>();
-        socketcomp = targetSocket.GetComponent<XRSocketInteractor>();
+        //socketcomp = targetSocket.GetComponent<XRSocketInteractor>();
         teleportComp = GetComponentInChildren<TeleportationAnchor>();
-        rb = GetComponent<Rigidbody>();              
+        rb = GetComponent<Rigidbody>();
+        rb.isKinematic = false;
         currentSocketPos = targetSocket.transform.position;
+        isSnapped = false;
+        audioCreated = false;
     }
 
     // Update is called once per frame
@@ -63,7 +66,7 @@ public class DeactivateGrab : MonoBehaviour
         {
             // Track Position of Stone 
             currentpos = transform.position;
-            //Debug.Log("Distanz: " + Vector3.Distance(currentpos, currentSocketPos));
+            Debug.Log("Distanz: " + Vector3.Distance(currentpos, currentSocketPos));
 
             if (Vector3.Distance(currentpos, currentSocketPos) <= snapThreshold && Vector3.Distance(currentpos, currentSocketPos) >= 0.1)
             {
@@ -76,25 +79,15 @@ public class DeactivateGrab : MonoBehaviour
                 //Deactivate Grab script
                 grabComp.enabled = false;
                 // Activate Rigidbody
-                rb.isKinematic = true;                
-                // Set target layer
-                SetTargetLayer();
-
-                //Debug.Log("Stone snapped");
+                rb.isKinematic = true;
+                // Set target layer of teleportation anchor to the target layer
+                teleportComp.interactionLayers = targetLayer;
+                Debug.Log("Target layer set");
                 Debug.Log("IsSnapped ist: " + isSnapped);                
             }          
             
         }
              
     }
-
-    public void SetTargetLayer()
-    {
-        // Set interaction layer of the socket and grabInteractable to target layer
-        teleportComp.interactionLayers = targetLayer;
-        Debug.Log("target layer set");
-        //Debug.Log("Layer 0: " + LayerMask.LayerToName(0));
-       
-    }       
- 
+     
 }
