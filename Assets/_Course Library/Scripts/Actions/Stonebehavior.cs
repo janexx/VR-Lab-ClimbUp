@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-
 /* 
  * This script detects whether the object collides with the trigger and if so, 
  * the XRGrabInteractable script of the current object gets deactivated,
@@ -22,7 +21,7 @@ public class DeactivateGrab : MonoBehaviour
     private bool audioCreated = false;
 
     [Tooltip("The socket that should get triggered")]
-    public GameObject targetSocket;
+    private GameObject targetSocket;
 
     [Tooltip("The audio that is played when object snaps to socket")]
     public GameObject audioSource;
@@ -36,9 +35,12 @@ public class DeactivateGrab : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        targetSocket = GameObject.FindWithTag("Socket");
+        Debug.Log("Target socket " +targetSocket.name);
         grabComp = GetComponent<XRGrabInteractable>();
         //socketcomp = targetSocket.GetComponent<XRSocketInteractor>();
         teleportComp = GetComponentInChildren<TeleportationAnchor>();
+        teleportComp.enabled = true;
         rb = GetComponent<Rigidbody>();
         rb.isKinematic = false;
         currentSocketPos = targetSocket.transform.position;
@@ -52,7 +54,7 @@ public class DeactivateGrab : MonoBehaviour
         // Instantiate Prefab with audio (play on awake) if stone is snapped to socket and the instance does not yet exist
         if (isSnapped && !audioCreated)
         {
-            Instantiate(audioSource, currentSocketPos, Quaternion.identity);
+            Instantiate(audioSource, currentpos, Quaternion.identity);
             isSnapped = false;
             audioCreated = true;
             Debug.Log("Audio is created: " + audioCreated);
@@ -62,18 +64,16 @@ public class DeactivateGrab : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         
-        if (other.gameObject.tag == "Stone")
+        if (other.gameObject.tag == "Socket")
         {
             // Track Position of Stone 
-            currentpos = transform.position;
-            Debug.Log("Distanz: " + Vector3.Distance(currentpos, currentSocketPos));
+            currentpos = transform.position;            
 
             if (Vector3.Distance(currentpos, currentSocketPos) <= snapThreshold && Vector3.Distance(currentpos, currentSocketPos) >= 0.1)
             {
                 // Set stone to exact socket position and rotation
                 transform.position = currentSocketPos;
                 transform.rotation = targetSocket.transform.rotation;
-
                 //SetSnap(true);
                 isSnapped = true;                
                 //Deactivate Grab script
@@ -84,10 +84,7 @@ public class DeactivateGrab : MonoBehaviour
                 teleportComp.interactionLayers = targetLayer;
                 Debug.Log("Target layer set");
                 Debug.Log("IsSnapped ist: " + isSnapped);                
-            }          
-            
+            }
         }
-             
     }
-     
 }
