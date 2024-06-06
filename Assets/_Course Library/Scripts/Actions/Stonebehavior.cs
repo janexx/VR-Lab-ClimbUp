@@ -22,6 +22,7 @@ public class DeactivateGrab : MonoBehaviour
 
     [Tooltip("The socket that should get triggered")]
     private GameObject targetSocket;
+    
 
     [Tooltip("The audio that is played when object snaps to socket")]
     public GameObject audioSource;
@@ -35,14 +36,15 @@ public class DeactivateGrab : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+      
         targetSocket = GameObject.FindWithTag("Socket");
         Debug.Log("Target socket " +targetSocket.name);
         grabComp = GetComponent<XRGrabInteractable>();
         //socketcomp = targetSocket.GetComponent<XRSocketInteractor>();
         teleportComp = GetComponentInChildren<TeleportationAnchor>();
-        teleportComp.enabled = true;
+        teleportComp.enabled = false;
         rb = GetComponent<Rigidbody>();
-        rb.isKinematic = false;
+        rb.isKinematic = true;  //was false
         currentSocketPos = targetSocket.transform.position;
         isSnapped = false;
         audioCreated = false;
@@ -67,24 +69,50 @@ public class DeactivateGrab : MonoBehaviour
         if (other.gameObject.tag == "Socket")
         {
             // Track Position of Stone 
-            currentpos = transform.position;            
+            currentpos = transform.position;
+            GameObject[] allSockets = GameObject.FindGameObjectsWithTag("Socket");
 
             if (Vector3.Distance(currentpos, currentSocketPos) <= snapThreshold && Vector3.Distance(currentpos, currentSocketPos) >= 0.1)
             {
-                // Set stone to exact socket position and rotation
-                transform.position = currentSocketPos;
-                transform.rotation = targetSocket.transform.rotation;
-                //SetSnap(true);
-                isSnapped = true;                
-                //Deactivate Grab script
-                grabComp.enabled = false;
-                // Activate Rigidbody
-                rb.isKinematic = true;
-                // Set target layer of teleportation anchor to the target layer
-                teleportComp.interactionLayers = targetLayer;
-                Debug.Log("Target layer set");
-                Debug.Log("IsSnapped ist: " + isSnapped);                
+                foreach (GameObject socket in allSockets)
+                {
+                    // Set stone to exact socket position and rotation
+                    transform.position = currentSocketPos;
+                    transform.rotation = targetSocket.transform.rotation;
+                    //SetSnap(true);
+                    isSnapped = true;
+                    //Deactivate Grab script
+                    grabComp.enabled = false;
+                    // Activate Rigidbody
+                    rb.isKinematic = true;
+                    // Set target layer of teleportation anchor to the target layer
+                    teleportComp.enabled = true;
+                    teleportComp.interactionLayers = targetLayer;
+                    Debug.Log("Target layer set");
+                    Debug.Log("IsSnapped ist: " + isSnapped);
+                }
+                                  
             }
         }
+    }
+
+    private GameObject FindClosestSocket()
+    {
+        GameObject[] allSockets = GameObject.FindGameObjectsWithTag("Socket");
+        GameObject closest = null;
+        float minDistance = Mathf.Infinity;
+        Vector3 position = transform.position;
+
+        foreach (GameObject socket in allSockets)
+        {
+            float distance = Vector3.Distance(socket.transform.position, position);
+            if (distance < minDistance)
+            {
+                closest = socket;
+                minDistance = distance;
+            }
+        }
+
+        return closest;
     }
 }

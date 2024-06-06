@@ -5680,7 +5680,7 @@ MonoBehaviour:
   OnPress:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1726307742}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SpawnObject, Assembly-CSharp
         m_MethodName: SpawnStone
         m_Mode: 1
@@ -6226,17 +6226,17 @@ PrefabInstance:
     - target: {fileID: 10976027606109264, guid: 004cb3e7072adf8408251a8ccc412e54,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.83
+      value: 2.8
       objectReference: {fileID: 0}
     - target: {fileID: 10976027606109264, guid: 004cb3e7072adf8408251a8ccc412e54,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.995
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 10976027606109264, guid: 004cb3e7072adf8408251a8ccc412e54,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.14
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 10976027606109264, guid: 004cb3e7072adf8408251a8ccc412e54,
         type: 3}
@@ -6277,6 +6277,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Grabbable stone 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1525353383696626139, guid: 004cb3e7072adf8408251a8ccc412e54,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2915111990727460419, guid: 004cb3e7072adf8408251a8ccc412e54,
         type: 3}
@@ -6916,7 +6921,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1726307743}
-  - component: {fileID: 1726307742}
+  - component: {fileID: 1726307744}
   m_Layer: 0
   m_Name: Spawn Manager
   m_TagString: Untagged
@@ -6924,22 +6929,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1726307742
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1726307741}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a658f19182a575a46b14f720a8e295a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  originalObject: {fileID: 1525353383696626139, guid: 004cb3e7072adf8408251a8ccc412e54,
-    type: 3}
-  spawnPosition: {fileID: 712900737}
-  spawnPointInteractor: {fileID: 712900742}
 --- !u!4 &1726307743
 Transform:
   m_ObjectHideFlags: 0
@@ -6955,6 +6944,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 225392641}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1726307744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1726307741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddccd54040c1bec4d866dccf62b9fcdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectToSpawn: {fileID: 1525353383696626139, guid: 004cb3e7072adf8408251a8ccc412e54,
+    type: 3}
+  spawnPoints:
+  - {x: 2.8, y: 4, z: 1}
 --- !u!1001 &1726371266
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7015,9 +7020,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2884047832783083422, guid: 4fd25bfc123e0bd40b39fa6946d72b2e,
         type: 3}
+      propertyPath: m_InteractionLayers.m_Bits
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2884047832783083422, guid: 4fd25bfc123e0bd40b39fa6946d72b2e,
+        type: 3}
       propertyPath: m_StartingSelectedInteractable
       value: 
-      objectReference: {fileID: 7992139317215401826}
+      objectReference: {fileID: 0}
     - target: {fileID: 8229783914364774144, guid: 4fd25bfc123e0bd40b39fa6946d72b2e,
         type: 3}
       propertyPath: m_Name
@@ -7643,6 +7653,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2884047832783083422, guid: 4fd25bfc123e0bd40b39fa6946d72b2e,
         type: 3}
+      propertyPath: m_InteractionLayers.m_Bits
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2884047832783083422, guid: 4fd25bfc123e0bd40b39fa6946d72b2e,
+        type: 3}
       propertyPath: m_StartingSelectedInteractable
       value: 
       objectReference: {fileID: 7992139317215401826}
@@ -7970,6 +7985,11 @@ PrefabInstance:
       propertyPath: targetSocket
       value: 
       objectReference: {fileID: 57276224}
+    - target: {fileID: 5415591232295468771, guid: 004cb3e7072adf8408251a8ccc412e54,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -25,10 +25,10 @@ public class GrabAndTeleport : MonoBehaviour
     {
         grabComp = GetComponent<XRGrabInteractable>();
         teleportComp = GetComponentInChildren<TeleportationAnchor>();
-        interactable = GetComponent<XRBaseInteractable>();
+        //interactable = GetComponent<XRBaseInteractable>();
         teleportComp.enabled = false;
         rb = GetComponent<Rigidbody>();
-        rb.isKinematic = false;
+        rb.isKinematic = true; //was false
     }
 
     void Update()
@@ -52,10 +52,10 @@ public class GrabAndTeleport : MonoBehaviour
             if (distance <= snapThreshold)
             {
                 SnapToSocket(other.gameObject);
-                Debug.Log("Snapped to socket.");
+                Debug.Log("On Trigger Enter Stone snapped to socket.");
                 // Deaktiviere die Interaktionsfähigkeit des Objekts
                 //interactable.enabled = false;
-                teleportComp.enabled = true;
+                
             }
         }
     }
@@ -75,6 +75,7 @@ public class GrabAndTeleport : MonoBehaviour
 
     private void SnapToSocket(GameObject socket)
     {
+        Debug.Log("SnapToSocket");
         closestSocket = socket;
         transform.position = closestSocket.transform.position;
         transform.rotation = closestSocket.transform.rotation;
@@ -82,9 +83,11 @@ public class GrabAndTeleport : MonoBehaviour
         isSnapped = true;
         grabComp.enabled = false;
         rb.isKinematic = true;
+        teleportComp.enabled = true;
         teleportComp.interactionLayers = targetLayer;
 
         Debug.Log("Stone snapped to socket: " + closestSocket.name);
+        Debug.Log("Teleport is active: " + teleportComp.enabled);
     }
 
     // Optional: If you need to find the closest socket from multiple sockets
