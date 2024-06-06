@@ -11,7 +11,6 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class DeactivateGrab : MonoBehaviour
 {
     private XRGrabInteractable grabComp;  // Component: Script XRGrabInteractable
-    //private XRSocketInteractor socketcomp; // Component: Script XRSocketInteractor
     private TeleportationAnchor teleportComp; // Component: Teleportation Area
 
     private Rigidbody rb;
@@ -22,6 +21,7 @@ public class DeactivateGrab : MonoBehaviour
 
     [Tooltip("The socket that should get triggered")]
     private GameObject targetSocket;
+    private GameObject closestSocket;
     
 
     [Tooltip("The audio that is played when object snaps to socket")]
@@ -37,15 +37,16 @@ public class DeactivateGrab : MonoBehaviour
     void Start()
     {
       
-        targetSocket = GameObject.FindWithTag("Socket");
-        Debug.Log("Target socket " +targetSocket.name);
+        //targetSocket = GameObject.FindWithTag("Socket");
+        //Debug.Log("Target socket " +targetSocket.name);
         grabComp = GetComponent<XRGrabInteractable>();
         //socketcomp = targetSocket.GetComponent<XRSocketInteractor>();
         teleportComp = GetComponentInChildren<TeleportationAnchor>();
         teleportComp.enabled = false;
         rb = GetComponent<Rigidbody>();
         rb.isKinematic = true;  //was false
-        currentSocketPos = targetSocket.transform.position;
+        //currentSocketPos = targetSocket.transform.position;
+
         isSnapped = false;
         audioCreated = false;
     }
@@ -60,7 +61,8 @@ public class DeactivateGrab : MonoBehaviour
             isSnapped = false;
             audioCreated = true;
             Debug.Log("Audio is created: " + audioCreated);
-        }     
+        }    
+        
     }
 
     private void OnTriggerStay(Collider other)
@@ -71,6 +73,8 @@ public class DeactivateGrab : MonoBehaviour
             // Track Position of Stone 
             currentpos = transform.position;
             GameObject[] allSockets = GameObject.FindGameObjectsWithTag("Socket");
+            closestSocket = FindClosestSocket();
+            currentSocketPos = FindClosestSocket().transform.position;
 
             if (Vector3.Distance(currentpos, currentSocketPos) <= snapThreshold && Vector3.Distance(currentpos, currentSocketPos) >= 0.1)
             {
@@ -78,7 +82,7 @@ public class DeactivateGrab : MonoBehaviour
                 {
                     // Set stone to exact socket position and rotation
                     transform.position = currentSocketPos;
-                    transform.rotation = targetSocket.transform.rotation;
+                    transform.rotation = closestSocket.transform.rotation;
                     //SetSnap(true);
                     isSnapped = true;
                     //Deactivate Grab script
@@ -88,12 +92,21 @@ public class DeactivateGrab : MonoBehaviour
                     // Set target layer of teleportation anchor to the target layer
                     teleportComp.enabled = true;
                     teleportComp.interactionLayers = targetLayer;
-                    Debug.Log("Target layer set");
                     Debug.Log("IsSnapped ist: " + isSnapped);
+                    Debug.Log("Closest target socket " + closestSocket.name);
                 }
                                   
             }
         }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        //FindClosestSocket();
+        closestSocket = FindClosestSocket();
+        Debug.Log("On Exit: Closest target socket " + closestSocket.name);
+        teleportComp.enabled = true;
+        teleportComp.interactionLayers = targetLayer;
     }
 
     private GameObject FindClosestSocket()
