@@ -5,6 +5,7 @@ public class GrabAndTeleport : MonoBehaviour
 {
     private XRGrabInteractable grabComp;  // XR Grab Interactable component
     private TeleportationAnchor teleportComp; // Teleportation Area component
+    private XRBaseInteractable interactable;
 
     private Rigidbody rb;
     private GameObject closestSocket;
@@ -24,13 +25,16 @@ public class GrabAndTeleport : MonoBehaviour
     {
         grabComp = GetComponent<XRGrabInteractable>();
         teleportComp = GetComponentInChildren<TeleportationAnchor>();
-        teleportComp.enabled = true;
+        interactable = GetComponent<XRBaseInteractable>();
+        teleportComp.enabled = false;
         rb = GetComponent<Rigidbody>();
         rb.isKinematic = false;
     }
 
     void Update()
     {
+        //FindClosestSocket();
+
         if (isSnapped && !audioCreated)
         {
             Instantiate(audioSource, transform.position, Quaternion.identity);
@@ -39,6 +43,7 @@ public class GrabAndTeleport : MonoBehaviour
         }
     }
 
+    //OnTriggerEnter prüft, ob der Stone nah genug ist, um zu "snappen". OnTriggerExit setzt den Stone zurück
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Socket"))
@@ -47,6 +52,10 @@ public class GrabAndTeleport : MonoBehaviour
             if (distance <= snapThreshold)
             {
                 SnapToSocket(other.gameObject);
+                Debug.Log("Snapped to socket.");
+                // Deaktiviere die Interaktionsfähigkeit des Objekts
+                //interactable.enabled = false;
+                teleportComp.enabled = true;
             }
         }
     }
@@ -56,8 +65,9 @@ public class GrabAndTeleport : MonoBehaviour
         if (other.gameObject == closestSocket)
         {
             isSnapped = false;
-            grabComp.enabled = true;
+            grabComp.enabled = false; // was true
             rb.isKinematic = false;
+            teleportComp.enabled = true;
             closestSocket = null;
             Debug.Log("Stone unsnapped from socket.");
         }
@@ -78,6 +88,7 @@ public class GrabAndTeleport : MonoBehaviour
     }
 
     // Optional: If you need to find the closest socket from multiple sockets
+    // Diese Methode durchläuft alle Sockets und findet den nächsten basierend auf der Distanz.
     private GameObject FindClosestSocket()
     {
         GameObject[] allSockets = GameObject.FindGameObjectsWithTag("Socket");

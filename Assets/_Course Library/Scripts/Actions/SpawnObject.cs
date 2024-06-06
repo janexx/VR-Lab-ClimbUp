@@ -29,13 +29,14 @@ public class SpawnObject : MonoBehaviour
             XRBaseInteractable interactable = newStone.GetComponent<XRBaseInteractable>();
             spawnPointInteractor.StartManualInteraction(interactable as IXRSelectInteractable);
             isSpawned = true;
+            Debug.Log("Stone spawned");
         }
 
     }
 
-    private void OnValidate()
+    /*private void OnValidate()
     {
         if (!spawnPosition)
             spawnPosition = transform;
-    }
+    }*/
 }
