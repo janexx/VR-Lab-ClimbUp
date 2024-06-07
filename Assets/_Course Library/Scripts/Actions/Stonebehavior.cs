@@ -88,7 +88,7 @@ public class DeactivateGrab : MonoBehaviour
                     //Deactivate Grab script
                     grabComp.enabled = false;
                     // Activate Rigidbody
-                    rb.isKinematic = true;
+                    //rb.isKinematic = false; //was true
                     // Set target layer of teleportation anchor to the target layer
                     teleportComp.enabled = true;
                     teleportComp.interactionLayers = targetLayer;
@@ -107,6 +107,7 @@ public class DeactivateGrab : MonoBehaviour
         Debug.Log("On Exit: Closest target socket " + closestSocket.name);
         teleportComp.enabled = true;
         teleportComp.interactionLayers = targetLayer;
+        //rb.isKinematic = true;
     }
 
     private GameObject FindClosestSocket()
