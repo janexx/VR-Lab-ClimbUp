@@ -5,14 +5,15 @@ using UnityEngine;
 public class SpawnAtMultiplePos : MonoBehaviour
 {
     public GameObject objectToSpawn;
-    public Vector3[] spawnPoints;
+    //public Vector3[] spawnPoints;
+    public GameObject[] spawnPoints;
     //private Rigidbody rb; 
 
     void Start()
     {
-        foreach (Vector3 spawnPoint in spawnPoints)
+        foreach (GameObject spawnPoint in spawnPoints)
         {
-            Instantiate(objectToSpawn, spawnPoint, Quaternion.identity);
+            Instantiate(objectToSpawn, spawnPoint.transform.position, Quaternion.identity);
             //rb = objectToSpawn.GetComponent<Rigidbody>();
             //rb.velocity = Vector3.zero;
         }
