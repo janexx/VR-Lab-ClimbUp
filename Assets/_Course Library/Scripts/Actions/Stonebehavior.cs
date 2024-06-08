@@ -36,16 +36,12 @@ public class DeactivateGrab : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-      
-        //targetSocket = GameObject.FindWithTag("Socket");
-        //Debug.Log("Target socket " +targetSocket.name);
         grabComp = GetComponent<XRGrabInteractable>();
         //socketcomp = targetSocket.GetComponent<XRSocketInteractor>();
         teleportComp = GetComponentInChildren<TeleportationAnchor>();
         teleportComp.enabled = false;
         rb = GetComponent<Rigidbody>();
         rb.isKinematic = true;  //was false
-        //currentSocketPos = targetSocket.transform.position;
 
         isSnapped = false;
         audioCreated = false;
@@ -75,6 +71,8 @@ public class DeactivateGrab : MonoBehaviour
             GameObject[] allSockets = GameObject.FindGameObjectsWithTag("Socket");
             closestSocket = FindClosestSocket();
             currentSocketPos = FindClosestSocket().transform.position;
+            Debug.Log("Stone" + this + "collides with Socket" + other.gameObject);
+
 
             if (Vector3.Distance(currentpos, currentSocketPos) <= snapThreshold && Vector3.Distance(currentpos, currentSocketPos) >= 0.1)
             {
@@ -87,13 +85,13 @@ public class DeactivateGrab : MonoBehaviour
                     isSnapped = true;
                     //Deactivate Grab script
                     grabComp.enabled = false;
+                    //grabComp.interactionLayers = targetLayer;
                     // Activate Rigidbody
                     //rb.isKinematic = false; //was true
                     // Set target layer of teleportation anchor to the target layer
-                    teleportComp.enabled = true;
-                    teleportComp.interactionLayers = targetLayer;
-                    Debug.Log("IsSnapped ist: " + isSnapped);
-                    Debug.Log("Closest target socket " + closestSocket.name);
+                    teleportComp.enabled = true;                    
+                    Debug.Log("Stone is snapped: " + isSnapped);
+                    //Debug.Log("Closest target socket " + closestSocket.name);
                 }
                                   
             }
@@ -106,7 +104,7 @@ public class DeactivateGrab : MonoBehaviour
         closestSocket = FindClosestSocket();
         Debug.Log("On Exit: Closest target socket " + closestSocket.name);
         teleportComp.enabled = true;
-        teleportComp.interactionLayers = targetLayer;
+        //teleportComp.interactionLayers = targetLayer;
         //rb.isKinematic = true;
     }
 
