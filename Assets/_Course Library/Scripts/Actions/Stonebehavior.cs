@@ -26,9 +26,10 @@ public class DeactivateGrab : MonoBehaviour
 
     [Tooltip("The audio that is played when object snaps to socket")]
     public GameObject audioSource;
+    private AudioSource stoneAudio;
 
     [Tooltip("The treshold of the distance between object and socket")]
-    public float snapThreshold = 0.1f;    
+    public float snapThreshold;    
 
     [Tooltip("The layer that's switched to")]
     public InteractionLayerMask targetLayer = 0;
@@ -41,8 +42,8 @@ public class DeactivateGrab : MonoBehaviour
         teleportComp = GetComponentInChildren<TeleportationAnchor>();
         teleportComp.enabled = false;
         rb = GetComponent<Rigidbody>();
-        rb.isKinematic = true;  //was false
-
+        //rb.isKinematic = true;  //was false
+        stoneAudio = GetComponentInChildren<AudioSource>();
         isSnapped = false;
         audioCreated = false;
     }
@@ -71,10 +72,10 @@ public class DeactivateGrab : MonoBehaviour
             GameObject[] allSockets = GameObject.FindGameObjectsWithTag("Socket");
             closestSocket = FindClosestSocket();
             currentSocketPos = FindClosestSocket().transform.position;
-            Debug.Log("Stone" + this + "collides with Socket" + other.gameObject);
+            //Debug.Log("Stone" + this + "collides with Socket" + other.gameObject);
 
 
-            if (Vector3.Distance(currentpos, currentSocketPos) <= snapThreshold && Vector3.Distance(currentpos, currentSocketPos) >= 0.1)
+            if (Vector3.Distance(currentpos, currentSocketPos) <= snapThreshold && Vector3.Distance(currentpos, currentSocketPos) >= 0.05)
             {
                 foreach (GameObject socket in allSockets)
                 {
@@ -99,13 +100,10 @@ public class DeactivateGrab : MonoBehaviour
     }
 
     private void OnTriggerExit(Collider other)
-    {
-        //FindClosestSocket();
-        closestSocket = FindClosestSocket();
-        Debug.Log("On Exit: Closest target socket " + closestSocket.name);
+    {        
+        //Debug.Log("On Exit: Closest target socket " + closestSocket.name);
         teleportComp.enabled = true;
         //teleportComp.interactionLayers = targetLayer;
-        //rb.isKinematic = true;
     }
 
     private GameObject FindClosestSocket()
@@ -124,7 +122,13 @@ public class DeactivateGrab : MonoBehaviour
                 minDistance = distance;
             }
         }
+        //Debug.Log("Closest Socket: " + closest);
+        return closest;        
+    }
 
-        return closest;
+    // When colliding with any other surface play audio
+    private void OnTriggerEnter(Collider other)
+    {
+        stoneAudio.Play();
     }
 }

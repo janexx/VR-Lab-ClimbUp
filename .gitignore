@@ -72,9 +72,13 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
 #Asset Packs
+Oculus
 Fristy Fantasy Lands 1
 Rocks and Boulders 2
 Rock Package
 Forst
 WaterWorks
-Oculus
+Bitgem
+FastSky
+_Packages_Environment
+_XRITemplate

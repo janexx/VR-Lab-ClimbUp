@@ -14,7 +14,7 @@ public class SetInteractionLayer : MonoBehaviour
 
     private void Awake()
     {
-        interactor = GetComponent<XRBaseInteractor>();
+        interactor = GetComponent<GravityCannonRayInteractor>();
         originalLayer = interactor.interactionLayers;
     }
 
