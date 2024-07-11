@@ -15,6 +15,7 @@ public class GravityCannonRayInteractor : XRRayInteractor
     public GameObject canonreticle;
     public GameObject teleportreticle;
     public XRInteractorLineVisual interactorline;
+    public AudioSource GravityGunAudio;
 
     // Start is called before the first frame update
     protected override void Start()
@@ -23,15 +24,17 @@ public class GravityCannonRayInteractor : XRRayInteractor
         interactionLayers = teleportlayer;
     }
 
+    // When A/X button is pressed (gravity canon is active)
     public void TurnOnGravityCanon()
     {
         Debug.Log("Gravity canon ON");
-        // When A/X button is pressed (gravity canon is active) then set line to linear and show target cross reticle
+        // then set line to linear
         lineType = LineType.StraightLine;  // straight line
-        //interactorline.reticle = canonreticle;
-        ChangeReticle(canonreticle);
+        ChangeReticle(canonreticle);  // show target cross reticle
         interactionLayers = grabbablelayer;
-        
+        GravityGunAudio.Play();  // Play scan sound
+
+
     }
 
     public void TurnOffGravityCanon()
@@ -40,9 +43,7 @@ public class GravityCannonRayInteractor : XRRayInteractor
         lineType = LineType.ProjectileCurve;  // curved line
         interactionLayers = teleportlayer;
         ChangeReticle(teleportreticle);
-
-        //interactorline.reticle.SetActive(false);
-        //Destroy(canonreticle);
+        GravityGunAudio.Stop();
     }
 
     public void ChangeReticle(GameObject newReticele)

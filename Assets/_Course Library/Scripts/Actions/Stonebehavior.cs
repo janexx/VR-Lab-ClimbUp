@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
@@ -27,6 +28,7 @@ public class DeactivateGrab : MonoBehaviour
     [Tooltip("The audio that is played when object snaps to socket")]
     public GameObject audioSource;
     private AudioSource stoneAudio;
+    public List<AudioClip> stoneSounds;
 
     [Tooltip("The treshold of the distance between object and socket")]
     public float snapThreshold;    
@@ -126,9 +128,28 @@ public class DeactivateGrab : MonoBehaviour
         return closest;        
     }
 
-    // When colliding with any other surface play audio
+    // When colliding with any other surface play audio from clip list
     private void OnTriggerEnter(Collider other)
     {
-        stoneAudio.Play();
+        if(other.gameObject.tag == "Rock")
+        {
+            stoneAudio.clip = stoneSounds[2];
+            if (!stoneAudio.isPlaying)
+            {
+                stoneAudio.Play();
+            }
+        }
+
+        if (other.gameObject.tag == "Water")
+        {
+            stoneAudio.clip = stoneSounds[0];
+            if(!stoneAudio.isPlaying)
+            {
+                stoneAudio.Play();
+            }
+                
+        }
+
+
     }
 }

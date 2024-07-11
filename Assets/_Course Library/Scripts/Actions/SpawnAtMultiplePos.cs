@@ -9,7 +9,7 @@ public class SpawnAtMultiplePos : MonoBehaviour
     public GameObject[] spawnPoints;
     //private Rigidbody rb; 
 
-    void Start()
+    void Awake()
     {
         foreach (GameObject spawnPoint in spawnPoints)
         {
